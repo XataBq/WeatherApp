@@ -5,6 +5,9 @@
     <color name="blue">#4977D2</color>
     <color name="dark_blue">#1A1F4A</color>
     <color name="red">#D03131</color>
-    <color name="grey">#191919</color>
+    <color name="grey">#202020</color>
+    <color name="light_grey">#B9B9B9</color>
     <color name="green">#67D761</color>
+    <color name="yellow_background">#FFF59D</color>
+    <color name="purple_background">#B39DDB</color>
 </resources>

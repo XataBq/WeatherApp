@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:padding="20dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -23,11 +24,10 @@
         android:layout_height="wrap_content"
         android:text="Click"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/cbOnOff"
+        android:id="@+id/cbDarkTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Включить"
@@ -35,5 +35,49 @@
         app:layout_constraintTop_toBottomOf="@id/tvText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <ToggleButton
+        android:id="@+id/tbLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Выключить"
+        android:textOff="Включить"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnClick"/>
+
+    <RadioGroup
+        android:id="@+id/rgBackgroundColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tbLight">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Choose background color. This func available only for light theme"/>
+
+        <RadioButton
+            android:id="@+id/rbPurple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Purple"/>
+
+        <RadioButton
+            android:id="@+id/rbYellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yellow"/>
+
+        <RadioButton
+            android:id="@+id/rbWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="White"/>
+
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
