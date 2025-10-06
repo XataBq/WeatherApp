@@ -1,6 +1,10 @@
 package com.example.learningdevelopment
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -24,6 +28,13 @@ class MainActivity : AppCompatActivity() {
     private val binding
         get() = _binding ?: throw IllegalStateException("ActivityMainBinding can't be null!")
 
+    private lateinit var prefs: SharedPreferences
+
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        binding.cbDarkTheme.isChecked = false
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,16 +46,16 @@ class MainActivity : AppCompatActivity() {
         val lightThemeText = "${ContextCompat.getString(this, R.string.light_theme)}"
 
         // Загружаем сохраненную тему
-        val prefs = getSharedPreferences("settings", MODE_PRIVATE)
-        val isDark = prefs.getBoolean("dark_theme", false)
+        prefs = getSharedPreferences("settings", MODE_PRIVATE)
+        val savedMode = prefs.getInt("dark_theme", AppCompatDelegate.MODE_NIGHT_NO)
+        AppCompatDelegate.setDefaultNightMode(savedMode)
 
         //Переменная для дефолтного цвета фона в светлой теме. Записывает в себя одно значение либо в data, resourceId и тд
         val typedValue = TypedValue()
 
-        AppCompatDelegate.setDefaultNightMode(
-            if (isDark) AppCompatDelegate.MODE_NIGHT_YES
-            else AppCompatDelegate.MODE_NIGHT_NO
-        )
+        val isDark: Boolean =
+            AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+
         //Установка текущего значения CheckBox
         binding.cbDarkTheme.isChecked = isDark
 
@@ -58,7 +69,12 @@ class MainActivity : AppCompatActivity() {
                         savedBackgroundColor
                     )
                 )
-                binding.rgBackgroundColor.check(prefs.getInt("rgBackgroundColorCheckedId", -1))
+                // Выбор чекбокса цвета фона в зависимости от фона
+                when (prefs.getInt("bg_color", R.color.white)) {
+                    R.color.purple_background -> binding.rbPurple.isChecked = true
+                    R.color.white -> binding.rbWhite.isChecked = true
+                    R.color.yellow_background -> binding.rbYellow.isChecked = true
+                }
             } else {
                 binding.rgBackgroundColor.check(binding.rbWhite.id)
                 // Как вариант достать значение
@@ -83,25 +99,19 @@ class MainActivity : AppCompatActivity() {
             }).show()
         }
 
-
-        //Описание темы
-        binding.tvText.text = if (isDark) darkThemeText else lightThemeText
-
         //слушатель на CheckBox
         binding.cbDarkTheme.setOnCheckedChangeListener { _, checked ->
-            prefs.edit {
-                putBoolean("dark_theme", checked)
-            }
-            if (checked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                binding.tvText.text = darkThemeText
-                Toast.makeText(this, "$darkThemeText is on", Toast.LENGTH_SHORT).show()
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                binding.tvText.text = lightThemeText
-                Toast.makeText(this, "$lightThemeText is on", Toast.LENGTH_SHORT).show()
-            }
+            val newMode =
+                if (checked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
 
+            if (AppCompatDelegate.getDefaultNightMode() != newMode) {
+                prefs.edit {
+                    putInt("dark_theme", newMode)
+                }
+                AppCompatDelegate.setDefaultNightMode(newMode)
+                if (checked) Toast.makeText(this, "$darkThemeText is on", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this, "$lightThemeText is on", Toast.LENGTH_SHORT).show()
+            }
         }
 
         //ToggleButton @tbLight
@@ -111,10 +121,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         //RadioButton RadioGroup @rgBackgorundColor @rbYellow @rbPurple
-
         if (!isDark) {
             binding.rgBackgroundColor.setOnCheckedChangeListener { group, checkedId ->
-                prefs.edit { putInt("rgBackgroundColorCheckedId", checkedId) }
                 val radioButton = group.findViewById<RadioButton>(checkedId)
 
                 when (radioButton.text) {
@@ -162,5 +170,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.btnGoToCalendarActivity.setOnClickListener {
+            val intent = Intent(
+                this@MainActivity, CalendarActivity::class.java
+            )
+            startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.tvBirthday.text = prefs.getString("date_of_birth", "__.__.____")
     }
 }

@@ -8,16 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/btnClick"
         android:layout_width="wrap_content"
@@ -30,11 +20,11 @@
         android:id="@+id/cbDarkTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Включить"
+        android:text="@string/dark_theme"
         android:textSize="26sp"
-        app:layout_constraintTop_toBottomOf="@id/tvText"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        android:saveEnabled="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ToggleButton
         android:id="@+id/tbLight"
@@ -52,6 +42,7 @@
         android:orientation="vertical"
         android:layout_marginTop="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:saveEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/tbLight">
 
         <TextView
@@ -62,22 +53,48 @@
 
         <RadioButton
             android:id="@+id/rbPurple"
+            android:saveEnabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Purple"/>
 
         <RadioButton
             android:id="@+id/rbYellow"
+            android:saveEnabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yellow"/>
 
         <RadioButton
             android:id="@+id/rbWhite"
+            android:saveEnabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="White"/>
 
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvBirthday"
+        android:layout_width="230dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="15dp"
+        android:background = "@drawable/shape_rounded_container"
+        android:gravity="center"
+        android:text="Birthday"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/btnGoToCalendarActivity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnGoToCalendarActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
