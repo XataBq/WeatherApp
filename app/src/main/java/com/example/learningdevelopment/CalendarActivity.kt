@@ -1,5 +1,7 @@
 package com.example.learningdevelopment
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -7,10 +9,12 @@ import android.widget.DatePicker
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import com.example.learningdevelopment.databinding.ActivityCalendarBinding
+import java.util.Calendar
 
 class CalendarActivity : AppCompatActivity() {
 
@@ -34,6 +38,8 @@ class CalendarActivity : AppCompatActivity() {
         val isDark: Boolean =
             AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
+        val style = if(isDark) android.R.style.Theme_Holo_Dialog_NoActionBar else android.R.style.Theme_Holo_Light_Dialog_NoActionBar
+
         if (!isDark) {
             val savedBackgroundColor = prefs.getInt("bg_color", -1)
             if (savedBackgroundColor != -1) {
@@ -45,24 +51,60 @@ class CalendarActivity : AppCompatActivity() {
                 )
             } else {
                 binding.root.setBackgroundColor(
-                    ContextCompat.getColor(this@CalendarActivity
-                        , R.color.white)
+                    ContextCompat.getColor(
+                        this@CalendarActivity, R.color.white
+                    )
                 )
             }
         }
 
-        val birthDay = prefs.getInt("birth_day", 1)
-        val birthMonth = prefs.getInt("birth_month", 0)
-        val birthYear = prefs.getInt("birth_year", 2000)
-        var dateOfBirth = createDateOfBirth(birthDay, birthMonth, birthYear)
+        binding.tvBirthDay.text = prefs.getString("birth_day", "Enter your birth date")
+        binding.tvBirthTime.text = prefs.getString("birth_time", "Enter your birth time")
+
+        val calendar = Calendar.getInstance()
 
         with(binding) {
-            tvBirthday.text = dateOfBirth
-            dpBirthday.init(birthYear, birthMonth, birthDay, null)
-            dpBirthday.setOnDateChangedListener { view, birthYear, birthMonth, birthDay ->
-                dateOfBirth = createDateOfBirth(birthDay, birthMonth, birthYear)
-                tvBirthday.text = dateOfBirth
+
+            ibChangeBirthDay.setOnClickListener {
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH)
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+                val dialog = DatePickerDialog(
+                    this@CalendarActivity,
+                    style,
+                    {_, chosenYear, chosenMonth, chosenDay ->
+                        val dateText = String.format("%02d.%02d.%04d", chosenDay, chosenMonth + 1, chosenYear)
+                        tvBirthDay.text = dateText
+                        prefs.edit { putString("birth_day", dateText) }
+                    }, year, month, day
+                )
+                dialog.show()
             }
+
+            ibChangeBirthTime.setOnClickListener {
+                val hour = calendar.get(Calendar.HOUR)
+                val minute = calendar.get(Calendar.MINUTE)
+
+                val timeDialog = TimePickerDialog(
+                    this@CalendarActivity,
+                    style,
+                    {
+                        _, chosenHour, chosenMinute ->
+                        val timeText = String.format("%02d:%02d", chosenHour, chosenMinute)
+                        tvBirthTime.text = timeText
+                        prefs.edit { putString("birth_time", timeText)}
+                    }, hour, minute, true
+                )
+                timeDialog.show()
+            }
+
+//            tvBirthday.text = dateOfBirth
+//            dpBirthday.init(birthYear, birthMonth, birthDay, null)
+//            dpBirthday.setOnDateChangedListener { view, birthYear, birthMonth, birthDay ->
+//                dateOfBirth = createDateOfBirth(birthDay, birthMonth, birthYear)
+//                tvBirthday.text = dateOfBirth
+//            }
 
             btnGoToMainActivity.setOnClickListener {
                 val intent = Intent(this@CalendarActivity, MainActivity::class.java)
@@ -77,14 +119,14 @@ class CalendarActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        with(binding) {
-            prefs.edit {
-                putInt("birth_day", dpBirthday.dayOfMonth)
-                putInt("birth_month", dpBirthday.month)
-                putInt("birth_year", dpBirthday.year)
-                putString("date_of_birth", tvBirthday.text.toString())
-            }
-        }
+//        with(binding) {
+//            prefs.edit {
+//                putInt("birth_day", dpBirthday.dayOfMonth)
+//                putInt("birth_month", dpBirthday.month)
+//                putInt("birth_year", dpBirthday.year)
+//                putString("date_of_birth", tvBirthday.text.toString())
+//            }
+//        }
     }
 
     private fun createDateOfBirth(birthDay: Int, birthMonth: Int, birthYear: Int): String {

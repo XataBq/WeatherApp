@@ -18,7 +18,6 @@
 
         <!--Шрифты-->
         <item name="android:textColor">@color/black</item>
-
     </style>
 
     <style name="Theme.LearningDevelopment" parent="Base.Theme.LearningDevelopment" />
