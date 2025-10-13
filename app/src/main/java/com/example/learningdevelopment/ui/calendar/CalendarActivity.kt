@@ -1,19 +1,18 @@
-package com.example.learningdevelopment
+package com.example.learningdevelopment.ui.calendar
 
+import android.R
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.DatePicker
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
-import androidx.core.view.isVisible
 import com.example.learningdevelopment.databinding.ActivityCalendarBinding
+import com.example.learningdevelopment.ui.main.MainActivity
 import java.util.Calendar
 
 class CalendarActivity : AppCompatActivity() {
@@ -38,7 +37,7 @@ class CalendarActivity : AppCompatActivity() {
         val isDark: Boolean =
             AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
-        val style = if(isDark) android.R.style.Theme_Holo_Dialog_NoActionBar else android.R.style.Theme_Holo_Light_Dialog_NoActionBar
+        val style = if(isDark) R.style.Theme_Holo_Dialog_NoActionBar else R.style.Theme_Holo_Light_Dialog_NoActionBar
 
         if (!isDark) {
             val savedBackgroundColor = prefs.getInt("bg_color", -1)
@@ -52,7 +51,7 @@ class CalendarActivity : AppCompatActivity() {
             } else {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
-                        this@CalendarActivity, R.color.white
+                        this@CalendarActivity, com.example.learningdevelopment.R.color.white
                     )
                 )
             }
@@ -73,8 +72,9 @@ class CalendarActivity : AppCompatActivity() {
                 val dialog = DatePickerDialog(
                     this@CalendarActivity,
                     style,
-                    {_, chosenYear, chosenMonth, chosenDay ->
-                        val dateText = String.format("%02d.%02d.%04d", chosenDay, chosenMonth + 1, chosenYear)
+                    { _, chosenYear, chosenMonth, chosenDay ->
+                        val dateText =
+                            String.format("%02d.%02d.%04d", chosenDay, chosenMonth + 1, chosenYear)
                         tvBirthDay.text = dateText
                         prefs.edit { putString("birth_day", dateText) }
                     }, year, month, day
@@ -89,11 +89,10 @@ class CalendarActivity : AppCompatActivity() {
                 val timeDialog = TimePickerDialog(
                     this@CalendarActivity,
                     style,
-                    {
-                        _, chosenHour, chosenMinute ->
+                    { _, chosenHour, chosenMinute ->
                         val timeText = String.format("%02d:%02d", chosenHour, chosenMinute)
                         tvBirthTime.text = timeText
-                        prefs.edit { putString("birth_time", timeText)}
+                        prefs.edit { putString("birth_time", timeText) }
                     }, hour, minute, true
                 )
                 timeDialog.show()

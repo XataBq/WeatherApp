@@ -1,12 +1,8 @@
-package com.example.learningdevelopment
+package com.example.learningdevelopment.ui.main
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.RadioButton
@@ -15,11 +11,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import com.example.learningdevelopment.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.content.edit
 import androidx.core.view.isVisible
-import androidx.lifecycle.whenCreated
+import com.example.learningdevelopment.ui.calendar.CalendarActivity
+import com.example.learningdevelopment.R
+import com.example.learningdevelopment.ui.weather.WeatherActivity
+import com.example.learningdevelopment.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -171,9 +169,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnGoToCalendarActivity.setOnClickListener {
+        binding.btnStartBirthdayActivity.setOnClickListener {
             val intent = Intent(
                 this@MainActivity, CalendarActivity::class.java
+            )
+            startActivity(intent)
+        }
+
+        binding.btnStartWeatherActivity.setOnClickListener {
+            val intent = Intent(
+                this@MainActivity, WeatherActivity::class.java
             )
             startActivity(intent)
         }
@@ -181,6 +186,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        binding.tvBirthday.text = prefs.getString("date_of_birth", "__.__.____")
+        binding.tvBirthday.text = prefs.getString("birth_day", "__.__.____")
     }
 }
