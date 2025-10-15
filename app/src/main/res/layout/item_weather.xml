@@ -49,7 +49,13 @@
                     android:id="@+id/tvTemperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11°C"
+                    android:text="11"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvTemperatureUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="°C"
                     android:textSize="14sp" />
 
                 <!-- разделитель -->
@@ -65,7 +71,22 @@
                     android:id="@+id/tvWind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ветер 3.4 м/с"
+                    android:text="@string/wind"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvWindSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3.4"
+                    android:textSize="14sp"
+                    android:layout_marginStart="5dp"/>
+
+                <TextView
+                    android:id="@+id/tvWindUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="м/с"
                     android:textSize="14sp" />
 
             </LinearLayout>

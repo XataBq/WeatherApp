@@ -7,9 +7,17 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.learningdevelopment.data.consts.MOSCOW
+import com.example.learningdevelopment.data.consts.REUTOV
+import com.example.learningdevelopment.data.consts.SAINT_PETERSBURG
+import com.example.learningdevelopment.data.consts.UFA
+import com.example.learningdevelopment.data.model.City
 import com.example.learningdevelopment.data.remote.RetrofitInstance
 import com.example.learningdevelopment.databinding.ActivityWeatherBinding
 import com.example.learningdevelopment.ui.main.MainActivity
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class WeatherActivity : AppCompatActivity() {
@@ -18,7 +26,7 @@ class WeatherActivity : AppCompatActivity() {
     private val binding
         get() = _binding ?: throw IllegalStateException("ActivityCalendarBinding can't be null")
 
-    private lateinit var prefs: SharedPreferences
+    private lateinit var adapter: WeatherAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +34,22 @@ class WeatherActivity : AppCompatActivity() {
         _binding = ActivityWeatherBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//       // Способ через ретрофит и коллы
+        val cities: MutableList<City> = mutableListOf(
+            MOSCOW, REUTOV, UFA, SAINT_PETERSBURG
+        )
+
+        adapter = WeatherAdapter(cities)
+
+        binding.rvWeather.layoutManager = LinearLayoutManager(this)
+        binding.rvWeather.adapter = adapter
+
+
+        binding.btnStartMainActivity.setOnClickListener {
+            val intent = Intent(this@WeatherActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+//        // Способ через ретрофит и коллы
 //        RetrofitInstance.api.getPostById().enqueue(object : Callback<List<Post>> {
 //            override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
 //                if (response.isSuccessful) {
@@ -44,20 +67,17 @@ class WeatherActivity : AppCompatActivity() {
 //                Log.e("Retrofit", "Network error: ${t.message}")
 //            }
 //        })
+          // Способ через корутины
+//        lifecycleScope.launch {
+//            try {
+//                val posts = RetrofitInstance.api.getPostById()
+//                Log.d("Retrofit", "Получено ${posts.size} постов")
+//            } catch (e: Exception) {
+//                Log.e("Retrofit", "Ошибка: ${e.message}")
+//            }
+//        }
 
-        lifecycleScope.launch {
-            try {
-                val posts = RetrofitInstance.api.getPostById()
-                Log.d("Retrofit", "Получено ${posts.size} постов")
-            } catch (e: Exception) {
-                Log.e("Retrofit", "Ошибка: ${e.message}")
-            }
-        }
 
-        binding.btnStartMainActivity.setOnClickListener {
-            val intent = Intent(this@WeatherActivity, MainActivity::class.java)
-            startActivity(intent)
-        }
 
     }
 }
