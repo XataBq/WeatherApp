@@ -44,7 +44,6 @@ Android-приложение погоды на Kotlin. Проект сделан
 ## ▶️ Запуск проекта
 1. `git clone https://github.com/XataBq/WeatherApp`
 2. Открыть в Android Studio
-3. Если нужен API key — добавить в `local.properties` (не коммитить ключ)
 
 ---
 
