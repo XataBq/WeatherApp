@@ -37,7 +37,7 @@ Android-приложение погоды на Kotlin. Проект сделан
 
 | Главный экран | Детали | Настройки |
 |---|---|---|
-| ![](screenshots/home.png) | ![](screenshots/details.png) | ![](screenshots/settings.png) |
+| ![](screenshots/home.jpeg) | ![](screenshots/weather.jpeg) | ![](screenshots/birth_date.jpeg) |
 
 ---
 
