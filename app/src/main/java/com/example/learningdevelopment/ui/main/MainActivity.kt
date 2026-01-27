@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //Описание текущей темы
-        val darkThemeText = "${ContextCompat.getString(this, R.string.dark_theme)}"
-        val lightThemeText = "${ContextCompat.getString(this, R.string.light_theme)}"
+        val darkThemeText = ContextCompat.getString(this, R.string.dark_theme)
+        val lightThemeText = ContextCompat.getString(this, R.string.light_theme)
 
         // Загружаем сохраненную тему
         prefs = getSharedPreferences("settings", MODE_PRIVATE)
