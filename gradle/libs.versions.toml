@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.0"
+agp = "8.13.2"
 kotlin = "2.2.20"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -11,8 +11,12 @@ activity = "1.11.0"
 constraintlayout = "2.2.1"
 retrofit = "3.0.0"
 coroutines = "1.10.2"
+kspVersion = "2.2.20-2.0.2"
+hiltVersion ="2.51.1"
 
 [libraries]
+hilt-android= {group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion"}
+hilt-compiler= {group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltVersion"}
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -26,6 +30,8 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 coroutines = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines"}
 
 [plugins]
+hilt = {id = "com.google.dagger.hilt.android", version.ref = "hiltVersion"}
+ksp = {id = "com.google.devtools.ksp", version.ref = "kspVersion"}
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
