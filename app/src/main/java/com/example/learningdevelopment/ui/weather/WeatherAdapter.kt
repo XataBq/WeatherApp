@@ -15,10 +15,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WeatherAdapter(
-    private val cities: MutableList<City>
+    private val cities: MutableList<City>,
 ) : RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>() {
-
-    class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class WeatherViewHolder(
+        itemView: View,
+    ) : RecyclerView.ViewHolder(itemView) {
         val tvCity: TextView = itemView.findViewById(R.id.tvCityName)
         val tvTemp: TextView = itemView.findViewById(R.id.tvTemperature)
         val tvTempUnit: TextView = itemView.findViewById(R.id.tvTemperatureUnit)
@@ -29,7 +30,7 @@ class WeatherAdapter(
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): WeatherViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_weather, parent, false)
         return WeatherViewHolder(view)
@@ -37,7 +38,7 @@ class WeatherAdapter(
 
     override fun onBindViewHolder(
         holder: WeatherViewHolder,
-        position: Int
+        position: Int,
     ) {
         val city = cities[position]
         holder.tvCity.text = city.city
@@ -50,11 +51,12 @@ class WeatherAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return cities.size
-    }
+    override fun getItemCount(): Int = cities.size
 
-    private fun updateWeather(city: City, position: Int){
+    private fun updateWeather(
+        city: City,
+        position: Int,
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitInstance.api.getCurrentWeather(city.lat, city.lon)
@@ -65,11 +67,9 @@ class WeatherAdapter(
                 withContext(Dispatchers.Main) {
                     notifyItemChanged(position)
                 }
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
-
-
 }

@@ -16,9 +16,8 @@ import com.example.learningdevelopment.ui.main.MainActivity
 import java.util.Calendar
 
 class CalendarActivity : AppCompatActivity() {
-
     private var _binding: ActivityCalendarBinding? = null
-    private val binding
+    val binding
         get() = _binding ?: throw IllegalStateException("ActivityCalendarBinding can't be null")
 
     private lateinit var prefs: SharedPreferences
@@ -37,7 +36,7 @@ class CalendarActivity : AppCompatActivity() {
         val isDark: Boolean =
             AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
-        val style = if(isDark) R.style.Theme_Holo_Dialog_NoActionBar else R.style.Theme_Holo_Light_Dialog_NoActionBar
+        val style = if (isDark) R.style.Theme_Holo_Dialog_NoActionBar else R.style.Theme_Holo_Light_Dialog_NoActionBar
 
         if (!isDark) {
             val savedBackgroundColor = prefs.getInt("bg_color", -1)
@@ -45,14 +44,15 @@ class CalendarActivity : AppCompatActivity() {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         this@CalendarActivity,
-                        savedBackgroundColor
-                    )
+                        savedBackgroundColor,
+                    ),
                 )
             } else {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
-                        this@CalendarActivity, com.example.learningdevelopment.R.color.white
-                    )
+                        this@CalendarActivity,
+                        com.example.learningdevelopment.R.color.white,
+                    ),
                 )
             }
         }
@@ -63,22 +63,25 @@ class CalendarActivity : AppCompatActivity() {
         val calendar = Calendar.getInstance()
 
         with(binding) {
-
             ibChangeBirthDay.setOnClickListener {
                 val year = calendar.get(Calendar.YEAR)
                 val month = calendar.get(Calendar.MONTH)
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-                val dialog = DatePickerDialog(
-                    this@CalendarActivity,
-                    style,
-                    { _, chosenYear, chosenMonth, chosenDay ->
-                        val dateText =
-                            String.format("%02d.%02d.%04d", chosenDay, chosenMonth + 1, chosenYear)
-                        tvBirthDay.text = dateText
-                        prefs.edit { putString("birth_day", dateText) }
-                    }, year, month, day
-                )
+                val dialog =
+                    DatePickerDialog(
+                        this@CalendarActivity,
+                        style,
+                        { _, chosenYear, chosenMonth, chosenDay ->
+                            val dateText =
+                                String.format("%02d.%02d.%04d", chosenDay, chosenMonth + 1, chosenYear)
+                            tvBirthDay.text = dateText
+                            prefs.edit { putString("birth_day", dateText) }
+                        },
+                        year,
+                        month,
+                        day,
+                    )
                 dialog.show()
             }
 
@@ -86,15 +89,19 @@ class CalendarActivity : AppCompatActivity() {
                 val hour = calendar.get(Calendar.HOUR)
                 val minute = calendar.get(Calendar.MINUTE)
 
-                val timeDialog = TimePickerDialog(
-                    this@CalendarActivity,
-                    style,
-                    { _, chosenHour, chosenMinute ->
-                        val timeText = String.format("%02d:%02d", chosenHour, chosenMinute)
-                        tvBirthTime.text = timeText
-                        prefs.edit { putString("birth_time", timeText) }
-                    }, hour, minute, true
-                )
+                val timeDialog =
+                    TimePickerDialog(
+                        this@CalendarActivity,
+                        style,
+                        { _, chosenHour, chosenMinute ->
+                            val timeText = String.format("%02d:%02d", chosenHour, chosenMinute)
+                            tvBirthTime.text = timeText
+                            prefs.edit { putString("birth_time", timeText) }
+                        },
+                        hour,
+                        minute,
+                        true,
+                    )
                 timeDialog.show()
             }
 
@@ -128,7 +135,9 @@ class CalendarActivity : AppCompatActivity() {
 //        }
     }
 
-    private fun createDateOfBirth(birthDay: Int, birthMonth: Int, birthYear: Int): String {
-        return "${birthDay / 10}${birthDay % 10}.${birthMonth / 10}${birthMonth % 10 + 1}.$birthYear"
-    }
+    private fun createDateOfBirth(
+        birthDay: Int,
+        birthMonth: Int,
+        birthYear: Int,
+    ): String = "${birthDay / 10}${birthDay % 10}.${birthMonth / 10}${birthMonth % 10 + 1}.$birthYear"
 }

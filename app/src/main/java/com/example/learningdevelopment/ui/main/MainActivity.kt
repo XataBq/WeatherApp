@@ -13,17 +13,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.isVisible
-import com.example.learningdevelopment.ui.calendar.CalendarActivity
 import com.example.learningdevelopment.R
-import com.example.learningdevelopment.ui.weather.WeatherActivity
 import com.example.learningdevelopment.databinding.ActivityMainBinding
+import com.example.learningdevelopment.ui.calendar.CalendarActivity
+import com.example.learningdevelopment.ui.weather.WeatherActivity
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
-
     private var _binding: ActivityMainBinding? = null
 
-    private val binding
+    val binding
         get() = _binding ?: throw IllegalStateException("ActivityMainBinding can't be null!")
 
     private lateinit var prefs: SharedPreferences
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Описание текущей темы
+        // Описание текущей темы
         val darkThemeText = ContextCompat.getString(this, R.string.dark_theme)
         val lightThemeText = ContextCompat.getString(this, R.string.light_theme)
 
@@ -48,13 +47,13 @@ class MainActivity : AppCompatActivity() {
         val savedMode = prefs.getInt("dark_theme", AppCompatDelegate.MODE_NIGHT_NO)
         AppCompatDelegate.setDefaultNightMode(savedMode)
 
-        //Переменная для дефолтного цвета фона в светлой теме. Записывает в себя одно значение либо в data, resourceId и тд
+        // Переменная для дефолтного цвета фона в светлой теме. Записывает в себя одно значение либо в data, resourceId и тд
         val typedValue = TypedValue()
 
         val isDark: Boolean =
             AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
-        //Установка текущего значения CheckBox
+        // Установка текущего значения CheckBox
         binding.cbDarkTheme.isChecked = isDark
 
         if (!isDark) {
@@ -64,8 +63,8 @@ class MainActivity : AppCompatActivity() {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(
                         this@MainActivity,
-                        savedBackgroundColor
-                    )
+                        savedBackgroundColor,
+                    ),
                 )
                 // Выбор чекбокса цвета фона в зависимости от фона
                 when (prefs.getInt("bg_color", R.color.white)) {
@@ -78,26 +77,33 @@ class MainActivity : AppCompatActivity() {
                 // Как вариант достать значение
 //                theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
                 binding.root.setBackgroundColor(
-                    ContextCompat.getColor(this@MainActivity, R.color.white)
+                    ContextCompat.getColor(this@MainActivity, R.color.white),
 //                    typedValue.data
                 )
             }
-        } else binding.rgBackgroundColor.isVisible = false
-
-        binding.btnClick.setOnClickListener {
-            val snackBar = Snackbar.make(
-                binding.btnClick,
-                "Hello android",
-                Snackbar.LENGTH_INDEFINITE
-            )
-            snackBar.setActionTextColor(ContextCompat.getColor(this, R.color.blue))
-            snackBar.setBackgroundTint(ContextCompat.getColor(this, R.color.red))
-            snackBar.setAction("Agree", View.OnClickListener() {
-                Toast.makeText(this, "Agreed!", Toast.LENGTH_LONG).show()
-            }).show()
+        } else {
+            binding.rgBackgroundColor.isVisible = false
         }
 
-        //слушатель на CheckBox
+        binding.btnClick.setOnClickListener {
+            val snackBar =
+                Snackbar.make(
+                    binding.btnClick,
+                    "Hello android",
+                    Snackbar.LENGTH_INDEFINITE,
+                )
+            snackBar.setActionTextColor(ContextCompat.getColor(this, R.color.blue))
+            snackBar.setBackgroundTint(ContextCompat.getColor(this, R.color.red))
+            snackBar
+                .setAction(
+                    "Agree",
+                    View.OnClickListener {
+                        Toast.makeText(this, "Agreed!", Toast.LENGTH_LONG).show()
+                    },
+                ).show()
+        }
+
+        // слушатель на CheckBox
         binding.cbDarkTheme.setOnCheckedChangeListener { _, checked ->
             val newMode =
                 if (checked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
@@ -107,18 +113,24 @@ class MainActivity : AppCompatActivity() {
                     putInt("dark_theme", newMode)
                 }
                 AppCompatDelegate.setDefaultNightMode(newMode)
-                if (checked) Toast.makeText(this, "$darkThemeText is on", Toast.LENGTH_SHORT).show()
-                else Toast.makeText(this, "$lightThemeText is on", Toast.LENGTH_SHORT).show()
+                if (checked) {
+                    Toast.makeText(this, "$darkThemeText is on", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "$lightThemeText is on", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
-        //ToggleButton @tbLight
+        // ToggleButton @tbLight
         binding.tbLight.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) Toast.makeText(this, "Lighting is on", Toast.LENGTH_SHORT).show()
-            else Toast.makeText(this, "Lighting is off", Toast.LENGTH_SHORT).show()
+            if (isChecked) {
+                Toast.makeText(this, "Lighting is on", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Lighting is off", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        //RadioButton RadioGroup @rgBackgorundColor @rbYellow @rbPurple
+        // RadioButton RadioGroup @rgBackgorundColor @rbYellow @rbPurple
         if (!isDark) {
             binding.rgBackgroundColor.setOnCheckedChangeListener { group, checkedId ->
                 val radioButton = group.findViewById<RadioButton>(checkedId)
@@ -128,8 +140,8 @@ class MainActivity : AppCompatActivity() {
                         binding.root.setBackgroundColor(
                             ContextCompat.getColor(
                                 this@MainActivity,
-                                R.color.purple_background
-                            )
+                                R.color.purple_background,
+                            ),
                         )
                         prefs.edit {
                             putInt("bg_color", R.color.purple_background)
@@ -140,8 +152,8 @@ class MainActivity : AppCompatActivity() {
                         binding.root.setBackgroundColor(
                             ContextCompat.getColor(
                                 this@MainActivity,
-                                R.color.yellow_background
-                            )
+                                R.color.yellow_background,
+                            ),
                         )
                         prefs.edit {
                             putInt("bg_color", R.color.yellow_background)
@@ -152,8 +164,8 @@ class MainActivity : AppCompatActivity() {
                         binding.root.setBackgroundColor(
                             ContextCompat.getColor(
                                 this@MainActivity,
-                                R.color.white
-                            )
+                                R.color.white,
+                            ),
                         )
                         prefs.edit {
                             putInt("bg_color", R.color.white)
@@ -162,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
                     else -> {
                         binding.root.setBackgroundColor(
-                            ContextCompat.getColor(this@MainActivity, R.color.white)
+                            ContextCompat.getColor(this@MainActivity, R.color.white),
                         )
                     }
                 }
@@ -170,16 +182,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnStartBirthdayActivity.setOnClickListener {
-            val intent = Intent(
-                this@MainActivity, CalendarActivity::class.java
-            )
+            val intent =
+                Intent(
+                    this@MainActivity,
+                    CalendarActivity::class.java,
+                )
             startActivity(intent)
         }
 
         binding.btnStartWeatherActivity.setOnClickListener {
-            val intent = Intent(
-                this@MainActivity, WeatherActivity::class.java
-            )
+            val intent =
+                Intent(
+                    this@MainActivity,
+                    WeatherActivity::class.java,
+                )
             startActivity(intent)
         }
     }
