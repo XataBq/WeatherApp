@@ -6,11 +6,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
     private const val BASE_URL = "https://api.open-meteo.com/"
     val api: WeatherApi by lazy {
-        Retrofit.Builder()
+        Retrofit
+            .Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(
-            GsonConverterFactory.create())
-            .build()
+                GsonConverterFactory.create(),
+            ).build()
             .create(WeatherApi::class.java)
     }
 }

@@ -1,29 +1,21 @@
 package com.example.learningdevelopment.ui.weather
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.learningdevelopment.data.consts.MOSCOW
 import com.example.learningdevelopment.data.consts.REUTOV
 import com.example.learningdevelopment.data.consts.SAINT_PETERSBURG
 import com.example.learningdevelopment.data.consts.UFA
 import com.example.learningdevelopment.data.model.City
-import com.example.learningdevelopment.data.remote.RetrofitInstance
 import com.example.learningdevelopment.databinding.ActivityWeatherBinding
 import com.example.learningdevelopment.ui.main.MainActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 class WeatherActivity : AppCompatActivity() {
-
     private var _binding: ActivityWeatherBinding? = null
-    private val binding
+    val binding
         get() = _binding ?: throw IllegalStateException("ActivityCalendarBinding can't be null")
 
     private lateinit var adapter: WeatherAdapter
@@ -34,15 +26,18 @@ class WeatherActivity : AppCompatActivity() {
         _binding = ActivityWeatherBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val cities: MutableList<City> = mutableListOf(
-            MOSCOW, REUTOV, UFA, SAINT_PETERSBURG
-        )
+        val cities: MutableList<City> =
+            mutableListOf(
+                MOSCOW,
+                REUTOV,
+                UFA,
+                SAINT_PETERSBURG,
+            )
 
         adapter = WeatherAdapter(cities)
 
         binding.rvWeather.layoutManager = LinearLayoutManager(this)
         binding.rvWeather.adapter = adapter
-
 
         binding.btnStartMainActivity.setOnClickListener {
             val intent = Intent(this@WeatherActivity, MainActivity::class.java)
@@ -67,7 +62,7 @@ class WeatherActivity : AppCompatActivity() {
 //                Log.e("Retrofit", "Network error: ${t.message}")
 //            }
 //        })
-          // Способ через корутины
+        // Способ через корутины
 //        lifecycleScope.launch {
 //            try {
 //                val posts = RetrofitInstance.api.getPostById()
@@ -76,8 +71,5 @@ class WeatherActivity : AppCompatActivity() {
 //                Log.e("Retrofit", "Ошибка: ${e.message}")
 //            }
 //        }
-
-
-
     }
 }

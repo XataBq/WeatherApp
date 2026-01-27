@@ -4,7 +4,7 @@ data class WeatherResponse(
     val latitude: Double,
     val longitude: Double,
     val current_weather_units: CurrentWeatherUnits,
-    val current_weather: CurrentWeather
+    val current_weather: CurrentWeather,
 )
 
 data class CurrentWeatherUnits(
@@ -15,5 +15,5 @@ data class CurrentWeatherUnits(
 data class CurrentWeather(
     val time: String,
     val temperature: Double,
-    val windspeed: Double
+    val windspeed: Double,
 )
